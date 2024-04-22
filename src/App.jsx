@@ -6,6 +6,8 @@ import { Route, Routes } from "react-router-dom";
 import Blogs from "./components/Blogs";
 import CreateBlog from "./components/CreateBlog";
 import BlogDetail from "./components/BlogDetail";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const App = () => {
   return (
@@ -16,6 +18,7 @@ const App = () => {
         <Route path="/create" element={<CreateBlog />} />
         <Route path="/blog" element={<BlogDetail />} />
       </Routes>
+      <ToastContainer />
       <Footer />
     </>
   );
