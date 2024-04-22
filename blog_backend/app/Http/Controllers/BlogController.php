@@ -20,18 +20,18 @@ class BlogController extends Controller
     public function show() {}
 
     public function store(Request $request) {
-        $validator = Validator::make($request->all,[
-            'blogTitle' => 'required|min:10',
-            'author' => 'required|min:3'
-        ]);
+        // $validator = Validator::make($request->all,[
+        //     'blogTitle' => 'required|min:10',
+        //     'author' => 'required|min:3'
+        // ]);
 
-        if($validator->fails()) {
-            return response()->json([
-                'status' => false,
-                'message' => 'Please fix the error first',
-                'errors' => $validator->errors()
-            ]);
-        }
+        // if($validator->fails()) {
+        //     return response()->json([
+        //         'status' => false,
+        //         'message' => 'Please fix the error first',
+        //         'errors' => $validator->errors()
+        //     ]);
+        // }
 
         $blog = new Blog();
         $blog ->blogTitle = $request->blogTitle;
