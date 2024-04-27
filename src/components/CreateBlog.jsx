@@ -51,7 +51,7 @@ const CreateBlog = () => {
       },
       body: JSON.stringify(newData),
     });
-
+    
     toast("Blog added successfully.");
 
     navigate("/");
