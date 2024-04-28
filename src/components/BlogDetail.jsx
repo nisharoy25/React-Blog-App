@@ -8,6 +8,7 @@ const BlogDetail = () => {
 
     const fetchBlog = async () => {
         const res = await fetch("http://localhost:8000/api/blogs/"+params.id)
+
         const result = await res.json();
         console.log(result);
         setBlog(result.data);
@@ -28,9 +29,9 @@ const BlogDetail = () => {
         <div className="col-md-12">
           <p>by {blog.author} on {blog.date}</p>
           {
-              <img className="w-50" src={"http://localhost:8000/uploads/blogs/${blog.image}"} />
+              <img className="w-50" src={`http://localhost:8000/uploads/blogs/${blog.image}`} />
                 }
-           <div className='mt-5' dangerouslySetInnerHTML={{ __html: blog.description }}></div>
+           <div className='mt-5 mb-5' dangerouslySetInnerHTML={{ __html: blog.description }}></div>
         </div>
     </div>
     </div>
