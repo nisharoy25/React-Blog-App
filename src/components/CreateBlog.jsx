@@ -1,12 +1,13 @@
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import Editor from "react-simple-wysiwyg";
-import { Form, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 
 const CreateBlog = () => {
   const [html, setHtml] = useState("");
   const [imageId, setImageId] = useState("");
+  const [categories, setCategories] = useState([]);
 
   function onChange(e) {
     setHtml(e.target.value);
@@ -37,7 +38,6 @@ const CreateBlog = () => {
   const {
     register,
     handleSubmit,
-    watch,
     formState: { errors },
   } = useForm();
 
@@ -55,6 +55,16 @@ const CreateBlog = () => {
     toast("Blog added successfully.");
 
     navigate("/");
+
+    useEffect(() => {
+      const fetchCategories = async () => {
+        const res = await fetch("http://localhost:8000/api/categories");
+        const data = await res.json();
+        setCategories(data);
+      };
+      fetchCategories();
+    }, []);
+
   };
 
   return (
@@ -105,6 +115,24 @@ const CreateBlog = () => {
               <label className="form-label">Image</label>
               <br />
               <input onChange={handleFileChange} type="file" />
+            </div>
+
+            <div className="mb-3">
+              <label className="form-label">Category</label>
+              <select
+                {...register("category", { required: true })}
+                className={`form-select ${errors.category && "is-invalid"}`}
+              >
+                <option value="">Select Category</option>
+                {categories.map((category) => (
+                  <option key={category.id} value={category.id}>
+                    {category.name}
+                  </option>
+                ))}
+              </select>
+              {errors.category && (
+                <p className="invalid-feedback">This field is required</p>
+              )}
             </div>
 
             <div className="mb-3">

@@ -13,6 +13,12 @@ class CategoryController extends Controller
     ]);
     }
 
+    public function fetchCategories()
+    {
+        $categories = Category::select('id', 'name')->get();
+        return response()->json($categories);
+    }
+
     public function create()
     {
         return view('create');
