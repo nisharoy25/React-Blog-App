@@ -1,4 +1,4 @@
-import React, { useState,useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import Editor from "react-simple-wysiwyg";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
@@ -7,11 +7,12 @@ import { toast } from "react-toastify";
 const CreateBlog = () => {
   const [html, setHtml] = useState("");
   const [imageId, setImageId] = useState("");
-  const [categories, setCategories] = useState([]);
+  const [categories, setCategories] = useState([]);  // State to store the categories fetched from the API
+  const [selectedCategory, setSelectedCategory] = useState("");   // State to hold the selected category
 
-  function onChange(e) {
+  const onChange = (e) => {
     setHtml(e.target.value);
-  }
+  };
 
   const navigate = useNavigate();
 
@@ -51,20 +52,28 @@ const CreateBlog = () => {
       },
       body: JSON.stringify(newData),
     });
-    
+
     toast("Blog added successfully.");
 
     navigate("/");
+  };
 
-    useEffect(() => {
-      const fetchCategories = async () => {
-        const res = await fetch("http://localhost:8000/api/categories");
-        const data = await res.json();
+  useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        const response = await fetch("http://localhost:8000/api/categories");
+        const data = await response.json();
         setCategories(data);
-      };
-      fetchCategories();
-    }, []);
+      } catch (error) {
+        console.error("Error fetching categories:", error);
+      }
+    };
 
+    fetchCategories();
+  }, []); // Empty dependency array means this effect runs only once after the initial render
+
+  const handleChange = (event) => {
+    setSelectedCategory(event.target.value);
   };
 
   return (
@@ -122,6 +131,8 @@ const CreateBlog = () => {
               <select
                 {...register("category", { required: true })}
                 className={`form-select ${errors.category && "is-invalid"}`}
+                value={selectedCategory}
+                onChange={handleChange}
               >
                 <option value="">Select Category</option>
                 {categories.map((category) => (
@@ -149,7 +160,6 @@ const CreateBlog = () => {
             </div>
 
             <button className="btn btn-dark">Create</button>
-
           </div>
         </form>
       </div>
